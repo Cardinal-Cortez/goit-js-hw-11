@@ -53,7 +53,7 @@ const handleLoadMore = async () => {
             Notify.info("We're sorry, but you've reached the end of search results.");
         }
     } catch (err) {
-        console.log(err);
+        Notify.failure("Erorr");
     }
 };
 
