@@ -9,28 +9,19 @@ const btnLoadMoreEl = document.querySelector('.load-more');
 const galleryListEl = document.querySelector('.gallery');
 
 const photoApi = new PhotoAPI();
-const gallery = new SimpleLightbox('.gallery a', {
+const lightbox = new SimpleLightbox('.gallery a', {
+    captionSelector: 'img',
     captionsData: 'alt',
     captionDelay: 250,
     scrollZoom: false,
   }); 
 
-const handleSearch = async event => {
+  const handleSearch = async event => {
     event.preventDefault();
-    
-    const { height: cardHeight } = document
-    .querySelector(".gallery")
-    .firstElementChild.getBoundingClientRect();
 
-    window.scrollBy({
-    top: cardHeight * 2,
-    behavior: "smooth",
-    });
 
     const searchQuery = event.currentTarget.elements['searchQuery'].value;
     photoApi.q = searchQuery;
-
-    gallery.refresh();
 
     try {
         const { data } = await photoApi.fetchPosts();
@@ -40,7 +31,9 @@ const handleSearch = async event => {
             Notify.failure("Sorry, there are no images matching your search query. Please try again.");
             return;
         }
+    
         galleryListEl.innerHTML = createPostsCard(data.hits);
+
         btnLoadMoreEl.classList.remove("is-hidden");
     } catch (err) {
         console.log(err);
@@ -53,8 +46,8 @@ const handleLoadMore = async () => {
     try {
         const { data } = await photoApi.fetchPosts();
         galleryListEl.insertAdjacentHTML('beforeend', createPostsCard(data.hits));
-
-        if (data.totalHits === photoApi.page) {
+        lightbox.refresh()
+        if ( photoApi.page > Math.ceil(data.totalHits / 4)) {
             btnLoadMoreEl.classList.add("is-hidden");
             Notify.info("We're sorry, but you've reached the end of search results.");
         }
