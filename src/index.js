@@ -25,7 +25,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
 
     try {
         const { data } = await photoApi.fetchPosts();
-        
+        console.log(data)
         if (!data.hits.length) {
             Notify.failure("Sorry, there are no images matching your search query. Please try again.");
             return;
