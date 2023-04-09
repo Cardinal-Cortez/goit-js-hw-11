@@ -25,7 +25,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
 
     try {
         const { data } = await photoApi.fetchPosts();
-    
+        
         if (!data.hits.length) {
             Notify.failure("Sorry, there are no images matching your search query. Please try again.");
             return;
@@ -34,7 +34,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
         }
     
         galleryListEl.innerHTML = createPostsCard(data.hits);
-
+        lightbox.refresh()
         btnLoadMoreEl.classList.remove("is-hidden");
     } catch (err) {
         console.log(err);
