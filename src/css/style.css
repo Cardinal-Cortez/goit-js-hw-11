@@ -1,0 +1,15 @@
+.load-more {
+    display: block;
+    margin: 0 auto;
+    min-width: 200px;
+    padding: 14px 4px;
+    background-color: #34495e;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 250ms linear;
+  }
+  .load-more.is-hidden {
+    display: none;
+  }
