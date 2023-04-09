@@ -41,7 +41,7 @@ const handleLoadMore = async () => {
         const { data } = await photoApi.fetchPosts();
         galleryListEl.insertAdjacentHTML('beforeend', createPostsCard(data.hits));
 
-        if (data.page === photoApi.page) {
+        if (data.per_page === photoApi.page) {
             btnLoadMoreEl.classList.add("is-hidden");
         }
     } catch (err) {
