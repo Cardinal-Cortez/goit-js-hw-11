@@ -3,13 +3,13 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import { PhotoAPI } from './get';
 import createPostsCard from './posts.hbs';
-import simpleLightbox from 'simplelightbox';
 
 const searchFormEl = document.querySelector('#search-form');
 const btnLoadMoreEl = document.querySelector('.load-more');
 const galleryListEl = document.querySelector('.gallery');
 
 const photoApi = new PhotoAPI();
+const gallery = new SimpleLightbox('.gallery a'); 
 
 const handleSearch = async event => {
     event.preventDefault();
@@ -17,15 +17,8 @@ const handleSearch = async event => {
     const searchQuery = event.currentTarget.elements['searchQuery'].value;
     photoApi.q = searchQuery;
 
-    var gallery = $('.gallery a').simpleLightbox();
+    gallery.refresh();
 
-    gallery.refresh(); // Next Image
-
-    new SimpleLightbox('.gallery a',{
-        captionsData: 'alt',
-        captionDelay: 250,
-        scrollZoom: false,
-      });
     try {
         const { data } = await photoApi.fetchPosts();
         Notify.info(`Hooray! We found ${data.totalHits} images.`)
@@ -58,4 +51,3 @@ const handleLoadMore = async () => {
 
 btnLoadMoreEl.addEventListener('click', handleLoadMore);
 searchFormEl.addEventListener('submit', handleSearch);
-
