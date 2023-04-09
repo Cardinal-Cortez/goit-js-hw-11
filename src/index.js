@@ -9,10 +9,23 @@ const btnLoadMoreEl = document.querySelector('.load-more');
 const galleryListEl = document.querySelector('.gallery');
 
 const photoApi = new PhotoAPI();
-const gallery = new SimpleLightbox('.gallery a'); 
+const gallery = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+    scrollZoom: false,
+  }); 
 
 const handleSearch = async event => {
     event.preventDefault();
+    
+    const { height: cardHeight } = document
+    .querySelector(".gallery")
+    .firstElementChild.getBoundingClientRect();
+
+    window.scrollBy({
+    top: cardHeight * 2,
+    behavior: "smooth",
+    });
 
     const searchQuery = event.currentTarget.elements['searchQuery'].value;
     photoApi.q = searchQuery;
@@ -41,8 +54,9 @@ const handleLoadMore = async () => {
         const { data } = await photoApi.fetchPosts();
         galleryListEl.insertAdjacentHTML('beforeend', createPostsCard(data.hits));
 
-        if (data.per_page === photoApi.page) {
+        if (data.totalHits === photoApi.page) {
             btnLoadMoreEl.classList.add("is-hidden");
+            Notify.info("We're sorry, but you've reached the end of search results.");
         }
     } catch (err) {
         console.log(err);
