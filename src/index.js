@@ -25,18 +25,19 @@ const lightbox = new SimpleLightbox('.gallery a', {
 
     try {
         const { data } = await photoApi.fetchPosts();
-        Notify.info(`Hooray! We found ${data.totalHits} images.`)
-        console.log(data)
+    
         if (!data.hits.length) {
             Notify.failure("Sorry, there are no images matching your search query. Please try again.");
             return;
+        }else{
+            Notify.info(`Hooray! We found ${data.totalHits} images.`)
         }
     
         galleryListEl.innerHTML = createPostsCard(data.hits);
 
         btnLoadMoreEl.classList.remove("is-hidden");
     } catch (err) {
-        console.log(err);
+        Notify.failure("Erorr");
     }
 };
 
