@@ -37,7 +37,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
 
         btnLoadMoreEl.classList.remove("is-hidden");
     } catch (err) {
-        Notify.failure("Erorr");
+        console.log(err);
     }
 };
 
@@ -53,7 +53,7 @@ const handleLoadMore = async () => {
             Notify.info("We're sorry, but you've reached the end of search results.");
         }
     } catch (err) {
-        Notify.failure("Erorr");
+        console.log(err);
     }
 };
 
