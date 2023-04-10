@@ -1,14 +1,14 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-import { PhotoAPI } from './get';
-import createPostsCard from './posts.hbs';
+import { PixabayAPI } from './get';
+import createPostsCard from './murkup.hbs';
 
 const searchFormEl = document.querySelector('#search-form');
 const btnLoadMoreEl = document.querySelector('.load-more');
 const galleryListEl = document.querySelector('.gallery');
 
-const photoApi = new PhotoAPI();
+const photoApi = new PixabayAPI();
 const lightbox = new SimpleLightbox('.gallery a', {
     captionSelector: 'img',
     captionsData: 'alt',
@@ -18,13 +18,21 @@ const lightbox = new SimpleLightbox('.gallery a', {
 
 const handleSearch = async event => {
     event.preventDefault();
-
-    const searchQuery = event.currentTarget.elements['searchQuery'].value;
+    photoApi.page = 1;
+    
+    
+    const searchQuery = event.currentTarget.elements['searchQuery'].value.trim();
     photoApi.q = searchQuery;
-
+    if (!photoApi.q) {
+        return;
+    }
+   
     try {
         const { data } = await photoApi.fetchPosts();
         console.log(data)
+        
+            btnLoadMoreEl.classList.add("is-hidden");
+        
         if (!data.hits.length) {
             Notify.failure("Sorry, there are no images matching your search query. Please try again.");
             return;
@@ -58,7 +66,7 @@ const handleLoadMore = async () => {
         const { data } = await photoApi.fetchPosts();
         galleryListEl.insertAdjacentHTML('beforeend', createPostsCard(data.hits));
         lightbox.refresh()
-        if (photoApi.page > Math.ceil(data.totalHits / 4)) {
+        if (photoApi.page >= Math.ceil(data.totalHits / 40)) {
             btnLoadMoreEl.classList.add("is-hidden");
             Notify.info("We're sorry, but you've reached the end of search results.");
         }
@@ -69,3 +77,7 @@ const handleLoadMore = async () => {
 
 btnLoadMoreEl.addEventListener('click', handleLoadMore);
 searchFormEl.addEventListener('submit', handleSearch);
+
+
+  
+  

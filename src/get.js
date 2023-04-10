@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-export class PhotoAPI{
+export class PixabayAPI{
     #BASE_URL = 'https://pixabay.com/api/';
     #API_KEY = '35198425-4c40430781db1dbcd425bce9c';
 
