@@ -31,8 +31,6 @@ const handleSearch = async event => {
         const { data } = await photoApi.fetchPosts();
         console.log(data)
         
-            btnLoadMoreEl.classList.add("is-hidden");
-        
         if (!data.hits.length) {
             Notify.failure("Sorry, there are no images matching your search query. Please try again.");
             return;
@@ -42,18 +40,12 @@ const handleSearch = async event => {
 
         galleryListEl.innerHTML = createPostsCard(data.hits);
         lightbox.refresh()
-        btnLoadMoreEl.classList.remove("is-hidden");
-
-        const galleryEl = document.querySelector(".gallery");
-        const { height: cardHeight } = galleryEl.getBoundingClientRect();
-
-        if (cardHeight) {
-            window.scrollBy({
-                top: cardHeight * 2,
-                behavior: "smooth",
-            });
-        }
-
+        if (data.totalHits <= photoApi.perPage) {
+            btnLoadMoreEl.classList.add("is-hidden");
+          }else{
+            btnLoadMoreEl.classList.remove("is-hidden");
+          }
+    
     } catch (err) {
         console.log(err);
     }
@@ -69,6 +61,16 @@ const handleLoadMore = async () => {
         if (photoApi.page >= Math.ceil(data.totalHits / 40)) {
             btnLoadMoreEl.classList.add("is-hidden");
             Notify.info("We're sorry, but you've reached the end of search results.");
+        }
+        
+        const galleryEl = document.querySelector(".gallery");
+        const { height: cardHeight } = galleryEl.getBoundingClientRect();
+
+        if (cardHeight) {
+            window.scrollBy({
+                top: cardHeight * 2,
+                behavior: "smooth",
+            });
         }
     } catch (err) {
         console.log(err);
