@@ -56,28 +56,51 @@ select {
   border-radius: 5px;
   cursor: pointer;
 }
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+
+/* Стилі для кнопки "Load more" */
+.load-more {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.photo-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.load-more.is-hidden {
+  display: none;
 }
+  
+  .photo-card img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+  }
+  
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
 
-.photo-card img {
-  max-width: 100%;
-  height: auto;
-}
+  .photo-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-.info {
-  margin-top: 0.5rem;
-  text-align: center;
-}
+  .photo-card img {
+    max-width: 100%;
+    height: auto;
+  }
 
-.info-item {
-  margin-bottom: 0.25rem;
-}
+  .info {
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+
+  .info-item {
+    margin-bottom: 0.25rem;
+  }
