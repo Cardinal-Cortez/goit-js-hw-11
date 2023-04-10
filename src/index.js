@@ -40,11 +40,13 @@ const handleSearch = async event => {
 
         galleryListEl.innerHTML = createPostsCard(data.hits);
         lightbox.refresh()
-        if (data.totalHits <= photoApi.perPage) {
+
+        if (photoApi.page >= Math.ceil(data.totalHits / 40)) {
             btnLoadMoreEl.classList.add("is-hidden");
-          }else{
+            Notify.info("We're sorry, but you've reached the end of search results.");
+        }else{
             btnLoadMoreEl.classList.remove("is-hidden");
-          }
+        }
     
     } catch (err) {
         console.log(err);
